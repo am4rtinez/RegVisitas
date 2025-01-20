@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <%- include('partials/head'); %>
+</head>
+<body>
+	
+	<form id="salidaForm">
+    <h1><%= title %></h1>
+
+    <div class="campo-salida">
+        <label for="identificadorSalida">Identificador (DNI/ID):</label>
+        <input type="text" id="identificadorSalida" name="identificadorSalida" required>
+    </div>
+
+    <div class="botones-container">
+        <button type="submit">Confirmar</button>
+        <button type="reset">Resetear</button>
+        <button type="button" onclick="window.location.href='/'">Volver</button>
+    </div>
+</form>
+
+    <div id="mensajeSalida"></div>
+
+    <script src="js/scriptSalida.js"></script>
+</body>
+</html>

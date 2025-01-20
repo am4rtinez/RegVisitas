@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%= title %></title>
+    <%- include('partials/head'); %>
+</head>
+
+<body>
+    <form id="registroForm">
+        <h1><%= title %></h1>
+
+        <div class="campos-formulario">
+            <label for="identificador">Identificador (DNI/ID):</label><br>
+            <input type="text" id="identificador" name="identificador" required><br><br>
+
+            <label for="nombre">Nombre:</label><br>
+            <input type="text" id="nombre" name="nombre" required><br><br>
+
+            <label for="apellidos">Apellidos:</label><br>
+            <input type="text" id="apellidos" name="apellidos" required><br><br>
+
+            <label for="empresa">Empresa:</label><br>
+            <input type="text" id="empresa" name="empresa"><br><br>
+
+            <label for="motivo">Motivo:</label><br>
+            <textarea id="motivo" name="motivo"></textarea>
+        </div>
+
+        <div id="firma-container">
+            <label for="firma">Firma:</label><br>
+            <canvas id="firma" width="300" height="100"></canvas><br><br>
+            <input type="hidden" id="firmaData" name="firmaData">
+        </div>
+
+        <div class="botones-container">
+            <button type="submit">Confirmar</button>
+            <button type="reset">Resetear</button>
+            <button type="button" onclick="window.location.href='/'">Volver</button>
+        </div>
+
+    </form>
+
+    <div id="mensajeEntrada"></div>
+
+    <%- include('partials/script'); %>
+</body>
+
+</html>

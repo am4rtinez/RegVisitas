@@ -1,0 +1,163 @@
+body {
+	font-family: sans-serif;
+	margin: 0;
+	min-height: 100vh;
+	display: grid;
+	place-items: center;
+	background-color: #f0f0f0;
+}
+
+h1 {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+form {
+	max-width: 90%;
+	margin: 0 auto; /* Centrar horizontalmente en pantallas pequeñas */
+	padding: 20px; /* Espaciado consistente */
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-sizing: border-box;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-gap: 20px;
+	background-color: white;
+}
+
+
+.campo-salida {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
+
+.campo-salida label {
+	text-align: center;
+	width: 100%;
+	margin-bottom: 0.625rem;
+}
+
+.campo-salida input[type="text"] {
+	width: 80%;
+}
+
+.campos-formulario {
+	display: flex;
+	flex-direction: column;
+}
+
+label {
+	display: block;
+	margin-bottom: 5px;
+}
+
+input[type="text"] {
+	width: calc(100% - 16px);
+	padding: 8px;
+	margin-bottom: 10px;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+textarea {
+	width: calc(100% - 16px);
+	padding: 8px;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	flex-grow: 1;
+	resize: vertical;
+	min-height: 100px;
+}
+
+#firma-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: stretch;
+	min-height: 200px;
+}
+
+canvas {
+	border: 1px solid black;
+	box-sizing: border-box;
+	max-width: 100%;
+	height: auto;
+	flex-grow: 1;
+}
+
+.botones-container {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+	width: 100%;
+}
+
+.botones-container button {
+	flex: 1;
+	margin: 0 10px;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease, transform 0.2s;
+	text-align: center;
+	min-width: 150px;
+}
+
+.botones-container button[type="submit"] {
+	background-color: #28a745;
+	color: white;
+}
+
+.botones-container button[type="reset"] {
+	background-color: #dc3545;
+	color: white;
+}
+
+.botones-container button[type="button"] {
+	background-color: #6c757d;
+	color: white;
+}
+
+.botones-container button:hover {
+	opacity: 0.9;
+	transform: scale(1.02);
+	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 768px) {
+	form {
+			grid-template-columns: 1fr 1fr;
+			width: 85%;
+			max-width: none;
+			margin: 0 auto; /* Centrar horizontalmente en pantallas grandes */
+			padding: 20px; /* Espaciado consistente */
+	}
+
+	h1 {
+			grid-column: 1 / span 2;
+	}
+
+	.campos-formulario {
+			grid-column: 1;
+	}
+
+	#firma-container {
+			grid-column: 2;
+	}
+
+	.botones-container {
+			grid-column: 1 / span 2;
+	}
+}
+
+#mensajeEntrada,
+#mensajeSalida {
+	margin-top: 20px;
+	text-align: center;
+	font-weight: bold;
+}
