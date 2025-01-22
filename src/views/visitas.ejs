@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Últimas Visitas</title>
+    <%- include('partials/head'); %>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <h1>Últimas Visitas</h1>
+
+    <label for="fechaInicio">Fecha de inicio:</label>
+    <input type="date" id="fechaInicio" name="fechaInicio">
+
+    <label for="fechaFin">Fecha de fin:</label>
+    <input type="date" id="fechaFin" name="fechaFin">
+
+    <button id="btnFiltrar">Filtrar</button>
+		<br><br>
+    <table id="tablaVisitas">
+        <thead>
+            <tr>
+                <th>Identificador</th>
+                <th>Nombre</th>
+								<th>Apellidos</th>
+								<th>Empresa</th>
+								<th>Motivo</th>
+								<th>Fecha llegada</th>
+								<th>Fecha salida</th>
+                </tr>
+        </thead>
+        <tbody>
+				</tbody>
+    </table>
+    <script src="/js/scriptVisitas.js"></script>
+</body>
+</html>
