@@ -1,124 +1,81 @@
-// import express from 'express'
-// import path from 'path'
-// import cors from 'cors'
-// import morgan from 'morgan'
+import express from 'express'
+import bodyParser from 'body-parser';
+import pg from 'pg'
+import path from 'path'
+import cors from 'cors'
+import morgan from 'morgan'
+import { PORT, NODE_ENV, DB_HOST, DB_NAME, DB_USER, DB_PASS, DB_PORT } from './config/config.js'
+import routes from './routes/index.js'
 
-// const app = express()
+const app = express()
+const { Pool } = pg
+
+// Settings
+app.set('port', PORT)
 
 //Middlewares
-// app.use(cors())
-// app.use(express.json())
-// app.use(express.text())
-// app.use(express.urlencoded({ extended: true}))
-
-const express = require('express');
-const bodyParser = require('body-parser');
-const { Pool } = require('pg');
-const path = require('path'); // Importa el módulo path
-
-const app = express();
-const port = 3000;
-
+app.use(cors())
+app.use(express.json())
+app.use(express.text())
+app.use(express.urlencoded({ extended: true}))
 app.use(bodyParser.json());
-app.use(express.urlencoded({extended: true}))
-app.use(express.static(path.join(__dirname, 'public'))); // Sirve archivos estáticos desde la carpeta 'public'
 
-// Configura el motor de plantillas
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views')); // Establece el directorio de las vistas
+if (NODE_ENV == 'development') {
+	console.log('Development mode', NODE_ENV)
+	app.use(morgan('dev'))
+} else {
+	console.log('Production mode', NODE_ENV)
+	app.use(morgan('combined'))
+}
+
+// Define views and public files.
+app.use(express.static('public'))
+app.set('views', path.join(process.cwd(), "src/views"))
+app.set('view engine', 'ejs')
+app.set('trust proxy', true)
 
 // Configuración de la conexión a la base de datos
-const pool = new Pool({
-    user: 'amartinez', // Usuario de la base de datos
-    host: 'localhost',      // Dirección del servidor de la base de datos (generalmente localhost)
-    database: 'regvisitantes', // Nombre de la base de datos
-    password: '123456', // Contraseña del usuario
-    port: 5432,             // Puerto de PostgreSQL (por defecto 5432)
-});
-
-// Modificar la creación de la tabla
-pool.query(`
-	CREATE TABLE IF NOT EXISTS visitantes (
-			id SERIAL PRIMARY KEY,
-			identificador VARCHAR(255) NOT NULL,
-			nombre VARCHAR(255) NOT NULL,
-			apellidos VARCHAR(255) NOT NULL,
-			empresa VARCHAR(255),
-			motivo TEXT,
-			firma TEXT, -- Almacena la firma en formato base64
-			fecha_llegada TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-			fecha_salida TIMESTAMP WITH TIME ZONE
-	);
-`, (err, res) => {
-	if (err) {
-			console.error("Error al crear la tabla:", err);
-	}
-});
+// const pool = new Pool({
+//     user: DB_USER, // Usuario de la base de datos
+//     host: DB_HOST,      // Dirección del servidor de la base de datos (generalmente localhost)
+//     database: DB_NAME, // Nombre de la base de datos
+//     password: 'pruebas', // Contraseña del usuario
+//     port: DB_PORT,             // Puerto de PostgreSQL (por defecto 5432)
+// });
 
 // Rutas
-app.get('/', (req, res) => {
-	res.render('index', { title: 'Registro de Visitantes' });
-});
+app.use('/', routes)
 
-app.get('/entrada', (req, res) => {
-	res.render('entrada', { title: 'Registro de Entrada' });
-});
+// app.get('/visitas', async (req, res) => {
+// 	try {
+// 			const client = await pool.connect();
 
-app.get('/salida', (req, res) => {
-	res.render('salida', { title: 'Registro de Salida' });
-});
+// 			let query = "SELECT identificador, nombre, apellidos, empresa, motivo, fecha_llegada, fecha_salida FROM visitantes ORDER BY fecha_llegada DESC LIMIT 100";
+// 			let queryParams = [];
 
-app.get('/visitantes', (req, res) => {
-	res.render('visitas', { title: 'Últimas Visitas' });
-});
+// 			if (req.query.fechaInicio && req.query.fechaFin) {
+// 					query = "SELECT identificador, nombre, apellidos, empresa, motivo, fecha_llegada, fecha_salida FROM visitantes WHERE fecha_llegada::date BETWEEN $1 AND $2 ORDER BY fecha_llegada DESC";
+// 					queryParams.push(req.query.fechaInicio);
+// 					queryParams.push(req.query.fechaFin);
+// 			} else if (req.query.fechaInicio) {
+// 				query = "SELECT identificador, nombre, apellidos, empresa, motivo, fecha_llegada, fecha_salida FROM visitantes WHERE fecha_llegada::date >= $1 ORDER BY fecha_llegada DESC";
+// 				queryParams.push(req.query.fechaInicio);
+// 			}else if (req.query.fechaFin) {
+// 				query = "SELECT identificador, nombre, apellidos, empresa, motivo, fecha_llegada, fecha_salida FROM visitantes WHERE fecha_llegada::date <= $1 ORDER BY fecha_llegada DESC";
+// 				queryParams.push(req.query.fechaFin);
+// 			}
 
-app.get('/visitas', async (req, res) => {
-	try {
-			const client = await pool.connect();
+// 			const result = await client.query(query, queryParams);
+// 			const visitas = result.rows;
+// 			console.log(visitas)
+// 			client.release();
 
-			let query = "SELECT identificador, nombre, apellidos, empresa, motivo, fecha_llegada, fecha_salida FROM visitantes ORDER BY fecha_llegada DESC LIMIT 100";
-			let queryParams = [];
-
-			if (req.query.fechaInicio && req.query.fechaFin) {
-					query = "SELECT identificador, nombre, apellidos, empresa, motivo, fecha_llegada, fecha_salida FROM visitantes WHERE fecha_llegada::date BETWEEN $1 AND $2 ORDER BY fecha_llegada DESC";
-					queryParams.push(req.query.fechaInicio);
-					queryParams.push(req.query.fechaFin);
-			} else if (req.query.fechaInicio) {
-				query = "SELECT identificador, nombre, apellidos, empresa, motivo, fecha_llegada, fecha_salida FROM visitantes WHERE fecha_llegada::date >= $1 ORDER BY fecha_llegada DESC";
-				queryParams.push(req.query.fechaInicio);
-			}else if (req.query.fechaFin) {
-				query = "SELECT identificador, nombre, apellidos, empresa, motivo, fecha_llegada, fecha_salida FROM visitantes WHERE fecha_llegada::date <= $1 ORDER BY fecha_llegada DESC";
-				queryParams.push(req.query.fechaFin);
-			}
-
-			const result = await client.query(query, queryParams);
-			const visitas = result.rows;
-			console.log(visitas)
-			client.release();
-
-			res.json(visitas);
-	} catch (error) {
-			console.error("Error al obtener las visitas:", error);
-			res.status(500).json({ error: 'Error al obtener las visitas' });
-	}
-});
-
-app.post('/registrar', (req, res) => {
-	const { identificador, nombre, apellidos, empresa, motivo, firma } = req.body;
-
-	pool.query(
-			'INSERT INTO visitantes (identificador, nombre, apellidos, empresa, motivo, firma) VALUES ($1, $2, $3, $4, $5, $6)',
-			[identificador, nombre, apellidos, empresa, motivo, firma],
-			(err, result) => {
-					if (err) {
-							console.error('Error al insertar en la base de datos:', err);
-							res.status(500).json({ mensaje: 'Error al registrar la visita.' });
-					} else {
-							res.json({ mensaje: 'Visita registrada correctamente.' });
-					}
-			}
-	);
-});
+// 			res.json(visitas);
+// 	} catch (error) {
+// 			console.error("Error al obtener las visitas:", error);
+// 			res.status(500).json({ error: 'Error al obtener las visitas' });
+// 	}
+// });
 
 app.post('/registrarSalida', (req, res) => {
 	const { identificador } = req.body;
@@ -142,13 +99,14 @@ app.post('/registrarSalida', (req, res) => {
 });
 
 // Manejo de la desconexión del pool (importante para evitar fugas de conexión)
-process.on('SIGINT', async () => {
-	console.log('Cerrando el pool de conexiones...');
-	await pool.end();
-	console.log('Pool de conexiones cerrado.');
-	process.exit(0);
-});
+// process.on('SIGINT', async () => {
+// 	console.log('Cerrando el pool de conexiones...');
+// 	await pool.end();
+// 	console.log('Pool de conexiones cerrado.');
+// 	process.exit(0);
+// });
 
-app.listen(port, () => {
-    console.log(`Servidor escuchando en el puerto ${port}`);
-});
+// Server initialization
+app.listen(app.set('port'), '0.0.0.0', () => {
+	console.log(`Servidor ejecutandose en http://localhost:${app.set('port')}`)
+})

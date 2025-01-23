@@ -43,29 +43,32 @@ document.addEventListener('DOMContentLoaded', function () {
 			document.getElementById('firmaData').value = firmaData;
 
 			fetch('/registrar', {
-					method: 'POST',
-					headers: {
-							'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({
-							identificador,
-							nombre,
-							apellidos,
-							empresa,
-							motivo,
-							firma: firmaData
-					})
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+				},
+				method: 'POST',
+				body: JSON.stringify({
+					identificador,
+					nombre,
+					apellidos,
+					empresa,
+					motivo,
+					firma: firmaData
+				})
 			})
-					.then(response => response.json())
-					.then(data => {
-							document.getElementById('mensajeEntrada').textContent = data.mensaje;
-							document.getElementById('registroForm').reset();
-							ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpia el canvas después del envío
-					})
-					.catch(error => {
-							console.error("Error en la petición:", error);
-							document.getElementById('mensajeEntrada').textContent = "Error al registrar la visita.";
-					});
+			.then(response => response.json())
+			.then(data => console.log(data))
+			.catch(error => console.log(error))
+			// .then(data => {
+			// 		document.getElementById('mensajeEntrada').textContent = data.mensaje;
+			// 		document.getElementById('registroForm').reset();
+			// 		ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpia el canvas después del envío
+			// })
+			// .catch(error => {
+			// 		console.error("Error en la petición:", error);
+			// 		document.getElementById('mensajeEntrada').textContent = "Error al registrar la visita.";
+			// });
 	});
 
 	// Limpia el canvas al resetear el formulario

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<%- include('../partials/head') %>
+
+</head>
+<body>
+	<div id="wrapper">
+		<form id="<%= idform %>" action="<%= action %>" method="post">
+			<div class="container">
+				<h2><%= title %></h2>
+				
+				<% if(typeof result != 'undefined') { %>
+					<% if (result.status == 'error') { %>
+						<div class="alert alert-danger alert-dismissable">
+							<%= result.error %> - <%= result.message %> (<%= result.code %>)
+							<a href="" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						</div>
+					<% } %>
+					<% if (result.status == 'success') { %>
+						<div class="alert alert-success alert-dismissable">
+							<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+							<%= result.message %>
+						</div>
+					<% } %>
+				<% } %>
+
+				<label for="phone">Móvil</label>
+				<input type="tel" id="phone" name="phone" placeholder="666777888" pattern="[6-9]{1}[0-9]{8}" required>
+
+				<% if (typeof fields != 'undefined') { %>
+					<% fields.forEach(function(field){ %>
+						<label for="<%= field.name %>"><%= field.text %></label>
+						<input type="<%= field.type %>"	id="<%= field.id %>" name="<%= field.name %>"	required>
+					<% }) %>
+				<% } %>
+
+				<label for="message">Mensaje</label>
+				<% if (typeof cadmsg != 'undefined') {%>
+					<textarea name="message" id="message" required disabled></textarea>
+				<% } else { %>
+					<textarea name="message" id="message" required></textarea>
+				<% } %>
+
+				<div class="row">
+					<button type="submit">Enviar SMS</button>
+					<button type="reset" id="reset">Reset</button>
+					<button type="menu" id="menu">Volver</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script src="<%= script %>" type="text/javascript"></script>
+</body>
+</html>
