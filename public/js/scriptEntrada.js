@@ -58,7 +58,12 @@ document.addEventListener('DOMContentLoaded', function () {
 				})
 			})
 			.then(response => response.json())
-			.then(data => console.log(data))
+			.then(data => {
+				console.log(data)
+				document.getElementById('mensajeEntrada').textContent = data.message;
+				document.getElementById('registroForm').reset();
+				ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpia el canvas después del envío
+			})
 			.catch(error => console.log(error))
 			// .then(data => {
 			// 		document.getElementById('mensajeEntrada').textContent = data.mensaje;

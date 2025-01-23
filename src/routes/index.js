@@ -6,23 +6,30 @@ const router = Router()
 // Index
 router.get('/', (req, res) => {
 	// res.render('pages/index', { 'title': 'Envío SMS SEIB112' });
-	res.render('pages/index', { title: 'Registro de Visitantes SEIB112' })
+	res.render('pages/index', { title: 'Registro de Personal Externo al SEIB112' })
 })
 
 router.get('/entrada', (req, res) => {
-	// res.render('pages/entrada', { title: 'Registro de Entrada' });
-	renderEntradaForm (req, res)
+	res.render('pages/entrada', { title: 'Registrar Entrada' });
+	// renderEntradaForm (req, res)
 });
 
 router.get('/salida', (req, res) => {
-	res.render('pages/salida', { title: 'Registro de Salida' });
+	res.render('pages/salida', { title: 'Registro Salida' });
 });
 
 router.get('/visitantes', (req, res) => {
-	res.render('pages/visitas', { title: 'Últimas Visitas' });
+	res.render('pages/visitas', { title: 'Últimos registros' });
 });
 
-router.post('/registrar', createVisita, renderEntradaForm)
+// Modificar el endpoint por entrada.
+router.post('/registrar', createVisita)
+
+router.post('/registrarSalida') //hay que registrar la salida.
+
+function renderFormulario (req,res) {
+	// res.render('pages/entrada', { title: 'Registro de Entrada' });
+}
 
 function renderEntradaForm (req, res) {
 	res.render('pages/form', {

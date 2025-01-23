@@ -13,16 +13,16 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO amartinez;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO amartinez;
 
 CREATE TABLE IF NOT EXISTS visitantes (
-			id SERIAL PRIMARY KEY,
-			identificador VARCHAR(15) NOT NULL,
-			nombre VARCHAR(255) NOT NULL,
-			apellidos VARCHAR(255) NOT NULL,
-			empresa VARCHAR(255),
-			motivo TEXT,
-			firma TEXT, -- Almacena la firma en formato base64
-			fecha_llegada TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-			fecha_salida TIMESTAMP WITH TIME ZONE
-	);
+	id SERIAL PRIMARY KEY,
+	identificador VARCHAR(15) NOT NULL,
+	nombre VARCHAR(255) NOT NULL,
+	apellidos VARCHAR(255) NOT NULL,
+	empresa VARCHAR(255),
+	motivo TEXT,
+	firma TEXT, -- Almacena la firma en formato base64
+	fecha_llegada TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+	fecha_salida TIMESTAMP WITH TIME ZONE
+);
 
 # Sal de psql
 \q

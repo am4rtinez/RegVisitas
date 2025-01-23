@@ -1,7 +1,7 @@
 import { Visita } from '../models/visitantes.model.js'
 
 export const createVisita = async ( req, res, next) => {
-	const visita = await Visita.create({
+	let visita = await Visita.create({
 		identificador: req.body.identificador,
 		nombre: req.body.nombre,
 		apellidos: req.body.apellidos,
@@ -9,13 +9,9 @@ export const createVisita = async ( req, res, next) => {
 		motivo: req.body.motivo,
 		firma: req.body.firma
 	}).then(function(visita){
+		res.status(200).json({ message: 'Registro entrada realizado.'});
 	}).catch(function(error){
-		console.log(error)
-		return {
-			status: 'error',
-			error: 'DB Error',
-			message: `${error.message}`,
-		}
+		res.status(500).json({ message: 'Error al registrar la entrada.', error: `${error.message}`})
 	})
 	next()
 }

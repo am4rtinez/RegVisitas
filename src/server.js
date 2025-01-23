@@ -1,6 +1,5 @@
 import express from 'express'
-import bodyParser from 'body-parser';
-import pg from 'pg'
+// import bodyParser from 'body-parser';
 import path from 'path'
 import cors from 'cors'
 import morgan from 'morgan'
@@ -8,7 +7,6 @@ import { PORT, NODE_ENV, DB_HOST, DB_NAME, DB_USER, DB_PASS, DB_PORT } from './c
 import routes from './routes/index.js'
 
 const app = express()
-const { Pool } = pg
 
 // Settings
 app.set('port', PORT)
@@ -18,7 +16,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.text())
 app.use(express.urlencoded({ extended: true}))
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 if (NODE_ENV == 'development') {
 	console.log('Development mode', NODE_ENV)
@@ -34,48 +32,12 @@ app.set('views', path.join(process.cwd(), "src/views"))
 app.set('view engine', 'ejs')
 app.set('trust proxy', true)
 
-// Configuración de la conexión a la base de datos
-// const pool = new Pool({
-//     user: DB_USER, // Usuario de la base de datos
-//     host: DB_HOST,      // Dirección del servidor de la base de datos (generalmente localhost)
-//     database: DB_NAME, // Nombre de la base de datos
-//     password: 'pruebas', // Contraseña del usuario
-//     port: DB_PORT,             // Puerto de PostgreSQL (por defecto 5432)
-// });
+app.use('/css', express.static(path.join(process.cwd(), 'node_modules/bootstrap/dist/css')))
+app.use('/js', express.static(path.join(process.cwd(), 'node_modules/bootstrap/dist/js')))
+app.use('/js', express.static(path.join(process.cwd(), 'node_modules/jquery/dist')))
 
 // Rutas
 app.use('/', routes)
-
-// app.get('/visitas', async (req, res) => {
-// 	try {
-// 			const client = await pool.connect();
-
-// 			let query = "SELECT identificador, nombre, apellidos, empresa, motivo, fecha_llegada, fecha_salida FROM visitantes ORDER BY fecha_llegada DESC LIMIT 100";
-// 			let queryParams = [];
-
-// 			if (req.query.fechaInicio && req.query.fechaFin) {
-// 					query = "SELECT identificador, nombre, apellidos, empresa, motivo, fecha_llegada, fecha_salida FROM visitantes WHERE fecha_llegada::date BETWEEN $1 AND $2 ORDER BY fecha_llegada DESC";
-// 					queryParams.push(req.query.fechaInicio);
-// 					queryParams.push(req.query.fechaFin);
-// 			} else if (req.query.fechaInicio) {
-// 				query = "SELECT identificador, nombre, apellidos, empresa, motivo, fecha_llegada, fecha_salida FROM visitantes WHERE fecha_llegada::date >= $1 ORDER BY fecha_llegada DESC";
-// 				queryParams.push(req.query.fechaInicio);
-// 			}else if (req.query.fechaFin) {
-// 				query = "SELECT identificador, nombre, apellidos, empresa, motivo, fecha_llegada, fecha_salida FROM visitantes WHERE fecha_llegada::date <= $1 ORDER BY fecha_llegada DESC";
-// 				queryParams.push(req.query.fechaFin);
-// 			}
-
-// 			const result = await client.query(query, queryParams);
-// 			const visitas = result.rows;
-// 			console.log(visitas)
-// 			client.release();
-
-// 			res.json(visitas);
-// 	} catch (error) {
-// 			console.error("Error al obtener las visitas:", error);
-// 			res.status(500).json({ error: 'Error al obtener las visitas' });
-// 	}
-// });
 
 app.post('/registrarSalida', (req, res) => {
 	const { identificador } = req.body;
