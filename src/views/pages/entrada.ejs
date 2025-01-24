@@ -1,51 +1,42 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title><%= title %></title>
     <%- include('../partials/head'); %>
 </head>
 
 <body>
-    <form id="registroForm">
-        <h1><%= title %></h1>
-				<div class="alert alert-success alert-dismissable">
-					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-					Hola Mundo
+	<h1 class="text-center"><%= title %></h1>
+	<div class="container">
+		<div class="alert alert-success alert-dismissable">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<span id="mensajeEntrada">Hola mundo</span>
+		</div>
+		<form id="registroForm" class="row g-3 mb-3 py-5">
+			<div class="col-md-6">
+				<input type="text" class="form-control" id="identificador" name="identificador" placeholder="DNI/NIF/Pasaporte" required>
+				<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" required> 
+				<input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos" required>
+				<input type="text" class="form-control" id="empresa" name="empresa" placeholder="Empresa" required>
+				<textarea class="form-control" id="motivo" name="motivo" placeholder="Motivo"></textarea>
+			</div>
+			<div class="col-md-6">
+				<div class="row">
+					<label class="form-label" for="firma">Firma:</label>
+					<input type="hidden" id="firmaData" name="firmaData">
 				</div>
-        <div class="campos-formulario">
-            <label for="identificador">Identificador (DNI/ID):</label><br>
-            <input type="text" id="identificador" name="identificador" required><br><br>
+				<div class="row align-items-center justify-content-center">
+					<canvas id="firma" width="300" height="100"></canvas>
+				</div>
+			</div>
+			<div class="row text-center align-items-center justify-content-center gap-3 py-3">
+				<button type="submit" class="btn btn-success col-3">Confirmar</button>
+				<button type="reset" class="btn btn-danger col-3">Resetear</button>
+				<button type="button" class="btn btn-primary col-3" onclick="window.location.href='/'">Volver</button>
+			</div>
+		</form>
+	</div>
 
-            <label for="nombre">Nombre:</label><br>
-            <input type="text" id="nombre" name="nombre" required><br><br>
-
-            <label for="apellidos">Apellidos:</label><br>
-            <input type="text" id="apellidos" name="apellidos" required><br><br>
-
-            <label for="empresa">Empresa:</label><br>
-            <input type="text" id="empresa" name="empresa"><br><br>
-
-            <label for="motivo">Motivo:</label><br>
-            <textarea id="motivo" name="motivo"></textarea>
-        </div>
-
-        <div id="firma-container">
-            <label for="firma">Firma:</label><br>
-            <canvas id="firma" width="300" height="100"></canvas><br><br>
-            <input type="hidden" id="firmaData" name="firmaData">
-        </div>
-
-        <div class="botones-container">
-            <button type="submit">Confirmar</button>
-            <button type="reset">Resetear</button>
-            <button type="button" onclick="window.location.href='/'">Volver</button>
-        </div>
-
-    </form>
-
-    <div id="mensajeEntrada"></div>
-
-    <%- include('../partials/script'); %>
+  <%- include('../partials/script'); %>
 </body>
 
 </html>

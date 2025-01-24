@@ -64,7 +64,10 @@ document.addEventListener('DOMContentLoaded', function () {
 				document.getElementById('registroForm').reset();
 				ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpia el canvas después del envío
 			})
-			.catch(error => console.log(error))
+			.catch(error => {
+				console.log(error)
+				document.getElementById('mensajeEntrada').textContent = "Error al registrar la entrada.";
+			})
 			// .then(data => {
 			// 		document.getElementById('mensajeEntrada').textContent = data.mensaje;
 			// 		document.getElementById('registroForm').reset();
@@ -72,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
 			// })
 			// .catch(error => {
 			// 		console.error("Error en la petición:", error);
-			// 		document.getElementById('mensajeEntrada').textContent = "Error al registrar la visita.";
 			// });
 	});
 
@@ -87,4 +89,20 @@ document.addEventListener('DOMContentLoaded', function () {
 			canvas.width = rect.width;
 			canvas.height = rect.height;
 	});
+
+	const alertClose = document.querySelector(".close");
+	if (alertClose != null){
+		alertClose.addEventListener('click', (e) => {
+			e.preventDefault()
+			e.target.parentElement.remove()
+		})
+	}
 });
+
+function clear() {
+	const alertClose = document.querySelector(".close");
+	if (alertClose != null){
+		// document.getElementById(id).style.display = 'block';
+		alertClose.parentElement.style.display = 'hidden'
+	}
+}
